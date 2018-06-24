@@ -1,0 +1,14 @@
+version: '3'
+volumes:
+    dbdata: ~
+services:
+    php:
+        build: .
+        hostname: wkhtml2pdf
+        command: ['/app/bin/console', 'server:run', '0.0.0.0:80', '--env=dev']
+        volumes:
+         - ./app:/app
+        ports:
+         - 9090:80
+        environment:
+         - APP_ENV=dev
