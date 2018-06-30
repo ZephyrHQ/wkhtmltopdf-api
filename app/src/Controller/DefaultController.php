@@ -21,17 +21,22 @@ class DefaultController extends Controller
      */
     public function print(Pdf $knpPdf, Request $request): Response
     {
-        $html = $request->get('html', null);
+        $html = $request->get('html', false);
+        $url = $request->get('url', false);
         $filename = $request->get('filename', 'output.pdf');
         $options = $request->get('options', []);
         $knpPdf->setOptions($options);
+        $knpPdf->setOption('cache-dir', '/tmp/wkhtml');
         $disposition = $request->get('disposition', 'attachment');
 
-        return new PdfResponse(
-            $knpPdf->getOutputFromHtml($html),
-            $filename,
-            'application/pdf',
-            $disposition
-        );
+        if($html !== false){
+            $output = $knpPdf->getOutputFromHtml($html);
+        } elseif($url !== false) {
+            $output = $knpPdf->getOutput(is_array($url) ? $url : [$url]);
+        } else {
+            $output = $knpPdf->getOutputFromHtml("You should provide html or url parameter to draw a complete html.");
+        }
+
+        return new PdfResponse($output, $filename, 'application/pdf', $disposition);
     }
 }
