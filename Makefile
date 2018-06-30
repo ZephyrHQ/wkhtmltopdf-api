@@ -5,6 +5,9 @@ GID:=$(shell id -g)
 cli:
 	docker-compose exec php sh
 
+run-prod:
+	docker run --rm -p 9090:80 -l printer html2pdf_php
+
 up:
 	docker-compose up -d $(c)
 build:

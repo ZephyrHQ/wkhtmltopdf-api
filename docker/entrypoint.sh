@@ -5,12 +5,6 @@ set -e
 if [ ! -f /lock-install ]; then
     echo "installation des composants initiaux"
 
-    # Installation xdebug
-    if [ "${CONTAINER_ENV}" = "dev" ]; then
-        echo Installation Xdebug
-        echo "zend_extension="`find /usr/local/lib/php/extensions -name 'xdebug.so' 2> /dev/null`"" | tee /usr/local/etc/php/conf.d/xdebug.ini
-    fi;
-
     # Installation outils console
     if [ "${CONTAINER_ENV}" = "dev" ]; then
         EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
@@ -30,6 +24,7 @@ if [ ! -f /lock-install ]; then
         apk add --no-cache vim curl wget bash bash-completion
         wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O /usr/local/bin/php-cs-fixer
         chmod +x /usr/local/bin/php-cs-fixer
+        composer install
     fi
     echo Fin des installations
     touch /lock-install

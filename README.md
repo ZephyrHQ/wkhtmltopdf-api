@@ -7,7 +7,7 @@ This service is swarm compliant and replicable on a cluster.
 
 ### Start the printer
 
-    docker run -rm -d zephyrhq/wkhtmltopdf-saas -p 9090:80 -n printer
+    docker run --rm -p 9090:80 -e APP_ENV=dev --name=printer zephyrhq/wkhtmltopdf-saas
 
 Test the render in a navigator :
 
